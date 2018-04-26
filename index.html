@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Prova FusionDMS - Thiago Melo</title>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="lib/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="lib/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="lib/themes/color.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="lib/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="lib/locale/easyui-lang-pt_BR.js"></script>
+</head>
+
+<body>
+<h2>Prova FusionDMS</h2>
+
+<div id="tt" class="easyui-tabs" >
+    <div title="Motoristas" data-options="iconCls:'icon-more'" style="display:none;">
+
+            <table id="dg" title="Lista de Motoristas" class="easyui-datagrid" style="width:1024px;height:350px"
+                   iconCls="icon-search"
+                   url="php/crud/motorista/get_motoristas.php"
+                   toolbar="#toolbar" pagination="true"
+                   rownumbers="false" fitColumns="true" singleSelect="true">
+                <thead>
+                <tr>
+                    <th field="id" width="15">ID</th>
+                    <th field="nome" width="50">Nome</th>
+                    <th field="cnh" width="50">CNH</th>
+                    <th field="rg" width="50">RG</th>
+                    <th field="cpf" width="50">CPF</th>
+                    <th field="data_nascimento" width="60">Data Nascimento</th>
+                    <th field="data_hora_cadastro" width="70">Data Hora Cadastro</th>
+
+
+                </tr>
+                </thead>
+            </table>
+
+        <div id="toolbar">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newMotorista()">Novo Motorista</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editMotorista()">Editar Motorista</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyMotorista()">Excluir Motorista</a>
+
+            <div id="tb">
+                <span>Nome:</span>
+                <input id="nomePesquisa" style="line-height:26px;border:1px solid #ccc">
+                <span>CNH:</span>
+                <input id="cnhPesquisa" style="line-height:26px;border:1px solid #ccc">
+                <a href="#" class="easyui-linkbutton" plain="true" onclick="getMotorista()" iconCls="icon-search">Pesquisar</a>
+                <a href="#" class="easyui-linkbutton" plain="true" onclick="refreshGridMotorista()" iconCls="icon-reload">Recarregar</a>
+            </div>
+
+        </div>
+
+
+        <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px"
+             closed="true" buttons="#dlg-buttons">
+            <div class="ftitle">Informações do Motorista</div>
+            <form id="fm" method="post" novalidate>
+                <div class="fitem">
+                    <label>Nome:</label>
+                    <input name="nome" class="easyui-textbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>CNH:</label>
+                    <input name="cnh" class="easyui-numberbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>RG:</label>
+                    <input name="rg"  class="easyui-numberbox">
+                </div>
+                <div class="fitem">
+                    <label>CPF:</label>
+                    <input name="cpf" class="easyui-numberbox">
+                </div>
+                <div class="fitem">
+                    <label>Data Nascimento:</label>
+                    <input name="data_nascimento" class="easyui-datebox" data-options="formatter:minhaFormatacao,parser:formataData">
+                </div>
+            </form>
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c1" iconCls="icon-ok" onclick="saveMotorista()" style="width:90px"><b>salvar</b></a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c5" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px"><b>fechar</b></a>
+        </div>
+
+    </div>
+    <div title="Veículos" data-options="iconCls:'icon-more'"  style="display:none;">
+        <table id="dgV" title="Lista de Veículos" class="easyui-datagrid" style="width:1024px;height:350px"
+               iconCls="icon-search"
+               url="php/crud/veiculo/get_veiculos.php"
+               toolbar="#toolbarV" pagination="true"
+               rownumbers="false" fitColumns="true" singleSelect="true">
+            <thead>
+            <tr>
+                <th field="id" width="5">ID</th>
+                <th field="nome" width="30">Nome</th>
+                <th field="placa" width="40">Placa</th>
+                <th field="marca" width="40">Marca</th>
+                <th field="modelo" width="40">Modelo</th>
+                <th field="ano_modelo" width="30">Ano Modelo</th>
+                <th field="km_atual" width="10">KM Atual</th>
+
+
+            </tr>
+            </thead>
+        </table>
+
+        <div id="toolbarV">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newVeiculo()">Novo Veículo</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editVeiculo()">Editar Veículo</a>
+
+        </div>
+
+
+        <div id="dlgV" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px"
+             closed="true" buttons="#dlg-buttonsV">
+            <div class="ftitle">Informações do Veículo</div>
+            <form id="fmV" method="post" novalidate>
+                <div class="fitem">
+                    <label>Nome:</label>
+                    <input name="nome" class="easyui-textbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>Placa:</label>
+                    <input name="placa" class="easyui-textbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>Marca:</label>
+                    <input name="marca"  class="easyui-textbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>Modelo:</label>
+                    <input name="modelo" class="easyui-textbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>Ano Modelo:</label>
+                    <input name="ano_modelo" class="easyui-numberbox">
+                </div>
+                <div class="fitem">
+                    <label>KM Atual:</label>
+                    <input name="km_atual" class="easyui-numberbox">
+                </div>
+            </form>
+        </div>
+        <div id="dlg-buttonsV">
+            <a href="javascript:void(0)" class="easyui-linkbutton c1" iconCls="icon-ok" onclick="saveVeiculo()" style="width:90px"><b>salvar</b></a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c5" iconCls="icon-cancel" onclick="javascript:$('#dlgV').dialog('close')" style="width:90px"><b>fechar</b></a>
+        </div>
+
+
+
+    </div>
+    <div title="Aluguéis" data-options="iconCls:'icon-more'" style="overflow:auto;padding:20px;display:none;">
+
+        <table id="dgA" title="Lista de Aluguéis" class="easyui-datagrid" style="width:1024px;height:350px"
+               iconCls="icon-search"
+               url="php/crud/veiculo_aluguel/get_alugueis.php"
+               toolbar="#toolbarA" pagination="true"
+               rownumbers="false" fitColumns="true" singleSelect="true">
+            <thead>
+            <tr>
+                <th field="id" width="5">ID</th>
+                <th field="nome_motorista" width="30">Motorista</th>
+                <th field="nome_veiculo" width="40">Veículo</th>
+                <th field="placa" width="40">Placa</th>
+                <th field="km_inicial" width="40">KM Inicial</th>
+                <th field="data_hora_inicial" width="30">Data Hora Início</th>
+                <th field="data_hora_fim" width="30">Data Hora Fim</th>
+                <th field="km_final" width="40">KM Final</th>
+
+            </tr>
+            </thead>
+        </table>
+
+        <div id="toolbarA">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newAluguel()">Novo Aluguel</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editAluguel()">Editar Aluguel</a>
+
+        </div>
+
+
+        <div id="dlgA" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px"
+             closed="true" buttons="#dlg-buttonsA">
+            <div class="ftitle">Informações do Aluguel</div>
+            <form id="fmA" method="post" novalidate>
+                <div class="fitem">
+                    <input class="easyui-combobox" style="width:80%;" id="motorista_id"
+                           name="motorista_id"
+                           data-options="
+               url:'php/crud/veiculo_aluguel/get_motorista.php',
+               label: 'Motorista:',
+               valueField:'id',
+               textField:'nome',
+               panelHeight:'auto'">
+                </div>
+                <div class="fitem">
+                    <input class="easyui-combobox" style="width:80%;" name="veiculo_id" id="veiculo_id" data-options="
+                url:'php/crud/veiculo_aluguel/get_veiculo.php',
+                label: 'Veículo:',
+               valueField:'id',
+               textField:'nome',
+               panelHeight:'auto'">
+                </div>
+                <div class="fitem">
+                    <label>Data Hora Início:</label>
+                    <input name="data_hora_inicio"  class="easyui-datebox" data-options="formatter:minhaFormatacao,parser:formataData" required="true">
+                </div>
+                <div class="fitem">
+                    <label>KM Inicial:</label>
+                    <input name="km_inicial" class="easyui-numberbox" required="true">
+                </div>
+                <div class="fitem">
+                    <label>Data Hora Fim:</label>
+                    <input name="data_hora_fim"  class="easyui-datebox" data-options="formatter:minhaFormatacao,parser:formataData">
+                    </div>
+                <div class="fitem">
+                    <label>KM Final:</label>
+                    <input name="km_final" class="easyui-numberbox" required="true">
+                </div>
+            </form>
+        </div>
+        <div id="dlg-buttonsA">
+            <a href="javascript:void(0)" class="easyui-linkbutton c1" iconCls="icon-ok" onclick="saveAluguel()" style="width:90px"><b>salvar</b></a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c5" iconCls="icon-cancel" onclick="javascript:$('#dlgA').dialog('close')" style="width:90px"><b>fechar</b></a>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="js/app.js"></script>
+
+</body>
+</html>
